@@ -1,6 +1,12 @@
-const App = () => (
-  <>
-    <h1> App</h1>
-  </>
-);
+import { BrowserRouter } from "react-router";
+import AllRoutes from "./Routes/AllRoutes";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AllRoutes />
+    </BrowserRouter>
+  );
+}
+
 export default App;
