@@ -1,10 +1,11 @@
-import Reports from "./pages/Reports";
+import { BrowserRouter } from "react-router";
+import AllRoutes from "./Routes/AllRoutes";
 
 function App() {
   return (
-    <>
-      <Reports />
-    </>
+    <BrowserRouter>
+      <AllRoutes />
+    </BrowserRouter>
   );
 }
 
