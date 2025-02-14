@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
+import Reports from "../pages/Reports";
 
 const AllRoutes = () => {
   // You can add authentication check here
@@ -25,6 +26,11 @@ const AllRoutes = () => {
         element={
           isAuthenticated ? <div>Dashboard</div> : <Navigate to="/login" />
         }
+      />
+
+      <Route
+        path="/reports"
+        element={isAuthenticated ? <Reports /> : <Navigate to="/login" />}
       />
 
       {/* Redirect root to login */}
