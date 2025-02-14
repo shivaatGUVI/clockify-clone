@@ -1,12 +1,11 @@
-import "./App.css";
-import TeamManagement from "./components/Team/TeamManagement";
+import { BrowserRouter } from "react-router";
+import AllRoutes from "./Routes/AllRoutes";
 
 function App() {
-  
   return (
-    <>
-      <TeamManagement/>
-    </>
+    <BrowserRouter>
+      <AllRoutes />
+    </BrowserRouter>
   );
 }
 
