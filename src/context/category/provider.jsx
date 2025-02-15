@@ -3,7 +3,7 @@ import { CategoryContext } from "./context";
 import axiosInstance from "../../axios/instance";
 
 // eslint-disable-next-line react/prop-types
-export const CategoryProvider = ({ children }) => {
+const CategoryProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [editingCategory, setEditingCategory] = useState(null);
 
@@ -72,3 +72,5 @@ export const CategoryProvider = ({ children }) => {
     </CategoryContext.Provider>
   );
 };
+
+export default CategoryProvider;

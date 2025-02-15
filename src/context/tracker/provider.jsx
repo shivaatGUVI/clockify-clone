@@ -1,5 +1,5 @@
-import { TrackerContext } from "./TrackerContext";
-import axiosInstance from "../api/axiosInstance";
+import { TrackerContext } from "./context";
+import axiosInstance from "../../axios/instance";
 
 // eslint-disable-next-line react/prop-types
 const TrackerProvider = ({ children }) => {

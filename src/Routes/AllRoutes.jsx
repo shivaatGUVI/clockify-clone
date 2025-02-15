@@ -1,8 +1,9 @@
-import React from "react";
 import { Routes, Route, Navigate } from "react-router";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Reports from "../pages/Reports";
+import CategoryList from "../components/category/List";
+import TrackerForm from "../components/tracker/Form";
 
 const AllRoutes = () => {
   // You can add authentication check here
@@ -32,6 +33,10 @@ const AllRoutes = () => {
         path="/reports"
         element={isAuthenticated ? <Reports /> : <Navigate to="/login" />}
       />
+
+      <Route path="/categories" element={<CategoryList />} />
+
+      <Route path="/tracker" element={<TrackerForm />} />
 
       {/* Redirect root to login */}
       <Route path="/" element={<Navigate to="/login" />} />
