@@ -10,9 +10,9 @@ function App() {
   return (
     <BrowserRouter>
       <div className="flex">
-        {isAuthenticated && <Sidebar />}
+        <Sidebar />
         <div className="flex-1">
-          {isAuthenticated && <Navbar />}
+          <Navbar />
           <div className="p-4">
             <AllRoutes />
           </div>
