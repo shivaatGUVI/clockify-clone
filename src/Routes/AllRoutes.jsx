@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Reports from "../pages/Reports";
+import TeamManagement from "../Components/Team/TeamManagement";
 
 const AllRoutes = () => {
   // You can add authentication check here
@@ -31,6 +32,12 @@ const AllRoutes = () => {
       <Route
         path="/reports"
         element={isAuthenticated ? <Reports /> : <Navigate to="/login" />}
+      />
+
+      <Route
+        path="/teammanagement"
+        // element={isAuthenticated ? <TeamManagement /> : <Navigate to="/login" />}
+        element={<TeamManagement />}
       />
 
       {/* Redirect root to login */}
