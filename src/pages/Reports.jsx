@@ -1,6 +1,8 @@
 import Calendar from "../components/Calendar";
 import Filter from "../components/Filter";
 import Tracker from "../components/Tracker";
+import VisualChart from "../components/VisualChart";
+import ReportPage from "../components/ReportPage";
 
 export default function Reports() {
   return (
@@ -27,6 +29,8 @@ export default function Reports() {
         <Filter />
       </div>
       <Tracker />
+      <VisualChart />
+      <ReportPage />
     </section>
   );
 }
