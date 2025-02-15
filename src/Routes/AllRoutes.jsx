@@ -1,25 +1,22 @@
-import React from "react";
+import { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Reports from "../pages/Reports";
+import { AuthContext } from "../contexts/LoginContext";
+import Home from "../pages/Home";
 import TeamManagement from "../Components/Team/TeamManagement";
+import Task from "../components/Team/Task";
 
 const AllRoutes = () => {
-  // You can add authentication check here
-  const isAuthenticated = false; // Replace with your auth logic
-
+  const { isAuthenticated } = useContext(AuthContext);
   return (
     <Routes>
       {/* Public Routes */}
-      <Route
-        path="/login"
-        element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" />}
-      />
-      <Route
-        path="/signup"
-        element={!isAuthenticated ? <Signup /> : <Navigate to="/dashboard" />}
-      />
+
+      <Route path="/home" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
 
       {/* Protected Routes */}
       <Route
@@ -28,6 +25,13 @@ const AllRoutes = () => {
           isAuthenticated ? <div>Dashboard</div> : <Navigate to="/login" />
         }
       />
+      <Route
+        path="/task"
+        // element={
+        //   isAuthenticated ? <Task/> : <Navigate to="/login" />
+        // }
+        element={<Task/>}  
+      />
 
       <Route
         path="/reports"
@@ -35,7 +39,7 @@ const AllRoutes = () => {
       />
 
       <Route
-        path="/teammanagement"
+        path="/team"
         // element={isAuthenticated ? <TeamManagement /> : <Navigate to="/login" />}
         element={<TeamManagement />}
       />

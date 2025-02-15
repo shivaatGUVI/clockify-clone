@@ -4,34 +4,33 @@ import axios from "axios";
 
 export default function TeamManagement() {
   const [members, setMembers] = useState([]);
-  const [groups, setGroups]=useState([]);
+  const [groups, setGroups] = useState([]);
   const [activeTab, setActiveTab] = useState('MEMBERS');
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [newMember, setNewMember] = useState({
-    name: '',
-    email: '',
-    role: 'user',
-    group: ''
-  });
+  const [selectedGroup, setSelectedGroup] = useState('');
+  const [selectedMember, setSelectedMember] = useState(null);
   const [error, setError] = useState('');
 
-  const currentUser = {
-    id: '67af0955bf8943b8eb1d1b44',
-    role: 'admin'
+
+  const getAllMembers = async () => {
+    try {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/users`);
+      setMembers(data);
+    } catch (error) {
+      console.error("Error fetching members", error);
+    }
   };
 
-  const getAllMembers=async()=>{
-    const allMembers=await axios.get(`${import.meta.env.VITE_API_URL}/users`);
-    console.log(allMembers.data) 
-    setMembers(allMembers.data);
-   
-  }
-  const getAllGroups=async()=>{
-    const allGroups=await axios.get(`${import.meta.env.VITE_API_URL}/groups`);
-    console.log(allGroups.data)
-    setGroups(allGroups.data);
-  }
+  const getAllGroups = async () => {
+    try {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/groups`);
+      setGroups(data.map(group => group.name));
+    } catch (error) {
+      console.error("Error fetching groups", error);
+    }
+  };
+
   useEffect(() => {
     getAllMembers();
     getAllGroups();
@@ -43,66 +42,48 @@ export default function TeamManagement() {
       member.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  
+
   const handleAddMember = async (e) => {
     e.preventDefault();
-    setError('');
-
-    // Check if user is admin
-    if (currentUser.role !== 'admin') {
-      setError('Only administrators can add new members');
+    
+    if (!selectedMember || !selectedGroup) {
+      setError("Please select a group before adding a member.");
       return;
     }
-
+  
     try {
-
-      // using axios
-
-
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/users`, {
-        name: newMember.name,
-        email: newMember.email,
-        role: newMember.role,
-        group: newMember.group
+      await axios.post(`${import.meta.env.VITE_API_URL}/group/addmembers`, {
+        userId: selectedMember.id,
+        groupId: selectedGroup
       });
-        if (response.status === 201) {
-          setMembers([...members, response.data]);
-          setNewMember({ name: '', email: '', role: 'user', group: '' });
-          setShowModal(false);
-        } else {  
-        setError('Failed to add member');   
-        setMembers([...members, newMember]);
-        setNewMember({ name: '', email: '', role: 'user', group: '' });
-        setShowModal(false);
-      }} 
-      catch (err) {
-      setError(err.message);
+  
+      setShowModal(false);
+      setSelectedGroup("");
+      setSelectedMember(null);
+      getAllMembers();
+    } catch (error) {
+      console.error("Error adding member to group", error);
+      setError("Failed to add member to group.");
     }
   };
-
-
-return(
-<div className="min-h-screen bg-gray-50 p-8">
+  
+  
+  return (
+    <div className="min-h-screen bg-gray-50 p-8">
       <h1 className="text-2xl text-gray-700 mb-6">Team</h1>
-      
+
       {/* Tabs */}
       <div className="mb-6 border-b border-gray-200">
         <div className="flex gap-8">
           <button
-            className={`pb-4 px-1 ${
-              activeTab === 'MEMBERS'
-                ? 'border-b-2 border-blue-500 text-blue-600'
-                : 'text-gray-500'
-            }`}
+            className={`pb-4 px-1 ${activeTab === 'MEMBERS' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500'}`}
             onClick={() => setActiveTab('MEMBERS')}
           >
             MEMBERS
           </button>
           <button
-            className={`pb-4 px-1 ${
-              activeTab === 'GROUPS'
-                ? 'border-b-2 border-blue-500 text-blue-600'
-                : 'text-gray-500'
-            }`}
+            className={`pb-4 px-1 ${activeTab === 'GROUPS' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500'}`}
             onClick={() => setActiveTab('GROUPS')}
           >
             GROUPS
@@ -128,13 +109,6 @@ return(
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md flex items-center gap-2 hover:bg-blue-700 transition-colors"
-        >
-          <Plus size={20} />
-          Add Member
-        </button>
       </div>
 
       {/* Members Table */}
@@ -145,21 +119,11 @@ return(
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-200">
-              <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">
-                NAME
-                <ChevronDown size={16} className="inline ml-1" />
-              </th>
-              <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">
-                EMAIL
-                <ChevronDown size={16} className="inline ml-1" />
-              </th>
-              <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">
-                ROLE
-              </th>
-              <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">
-                GROUP
-                <ChevronDown size={16} className="inline ml-1" />
-              </th>
+              <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">NAME</th>
+              <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">EMAIL</th>
+              <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">ROLE</th>
+              <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">GROUP</th>
+              <th className="text-left px-6 py-3 text-sm font-medium text-gray-500">ACTION</th>
             </tr>
           </thead>
           <tbody>
@@ -170,10 +134,11 @@ return(
                 <td className="px-6 py-4 text-gray-800">{member.role || ''}</td>
                 <td className="px-6 py-4">
                   {member.group && (
-                    <span className="px-3 py-1 text-sm rounded-full bg-blue-50 text-blue-600">
-                      {member.group}
-                    </span>
+                    <span className="px-3 py-1 text-sm rounded-full bg-blue-50 text-blue-600">{member.group}</span>
                   )}
+                </td>
+                <td className="px-6 py-4 text-center">
+                  <Plus size={20} onClick={() => { setShowModal(true); setSelectedMember(member); }} className="text-green-600 cursor-pointer" />
                 </td>
               </tr>
             ))}
@@ -181,88 +146,32 @@ return(
         </table>
       </div>
 
-      {/* Add Member Modal */}
+      {/* Adding Member to the Group */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold">Add New Member</h2>
-              <button
-                onClick={() => setShowModal(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
+              <h2 className="text-xl font-semibold">Add {selectedMember?.name} to Group</h2>
+              <button onClick={() => setShowModal(false)} className="text-gray-500 hover:text-gray-700">
                 <X size={20} />
               </button>
             </div>
             <form onSubmit={handleAddMember}>
+              {error && <p className="text-red-500 text-sm">{error}</p>}
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={newMember.name}
-                    onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
-                    className="w-full p-2 border rounded-md"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={newMember.email}
-                    onChange={(e) => setNewMember({ ...newMember, email: e.target.value })}
-                    className="w-full p-2 border rounded-md"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Role
-                  </label>
-                  <input
-                    type="text"
-                    value={newMember.role}
-                    onChange={(e) => setNewMember({ ...newMember, role: e.target.value })}
-                    className="w-full p-2 border rounded-md"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Group
-                  </label>
-                  <select
-                    value={newMember.group}
-                    onChange={(e) => setNewMember({ ...newMember, group: e.target.value })}
-                    className="w-full p-2 border rounded-md"
-                  >
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Group</label>
+                  <select className="w-full p-2 border rounded-md" value={selectedGroup} onChange={(e) => setSelectedGroup(e.target.value)}>
                     <option value="">Select a group</option>
                     {groups.map((group) => (
-                      <option key={group} value={group}>
-                        {group}
-                      </option>
+                      <option key={group} value={group}>{group}</option>
                     ))}
                   </select>
                 </div>
               </div>
               <div className="mt-6 flex justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="px-4 py-2 border rounded-md text-gray-600 hover:bg-gray-50"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                >
-                  Add Member
-                </button>
+                <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 border rounded-md text-gray-600 hover:bg-gray-50">Cancel</button>
+                <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Add to Group</button>
               </div>
             </form>
           </div>
