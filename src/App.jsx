@@ -9,7 +9,7 @@ function App() {
   const { isAuthenticated } = useContext(AuthContext);
   return (
     <BrowserRouter>
-      <div className="flex">
+      <div className="flex h-screen">
         {isAuthenticated && <Sidebar />}
         <div className="flex-1">
           {isAuthenticated && <Navbar />}
