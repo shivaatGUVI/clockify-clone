@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 import {
   MdChevronLeft,
@@ -27,11 +27,44 @@ const DualMonthCalendar = () => {
     return newDate;
   };
 
+  // Get data api
+  useEffect(() => {
+    if (selectedRange.start && selectedRange.end) {
+      fetch("https://api.example.com/getData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          startDate: selectedRange.start,
+          endDate: selectedRange.end,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log("API Response:", data))
+        .catch((error) => console.error("API Error:", error));
+    }
+  }, [selectedRange]);
+
   const formatMonth = (date) => {
     return date.toLocaleDateString("en-US", {
       month: "short",
       year: "numeric",
     });
+  };
+
+  const handlePreviousWeek = () => {
+    setSelectedRange((prev) => ({
+      start: addWeeks(prev.start, -1),
+      end: addWeeks(prev.end, -1),
+    }));
+  };
+
+  const handleNextWeek = () => {
+    setSelectedRange((prev) => ({
+      start: addWeeks(prev.start, 1),
+      end: addWeeks(prev.end, 1),
+    }));
   };
 
   const getMonthDays = (date) => {
@@ -165,11 +198,17 @@ const DualMonthCalendar = () => {
           </span>
         </button>
         <div className="flex items-center gap-2">
-          <button className="bg-white shadow px-3 py-2 border border-gray-300 cursor-pointer">
-            <MdKeyboardArrowLeft className="w-5 h-5"/>
+          <button
+            className="bg-white shadow px-3 py-2 border border-gray-300 cursor-pointer"
+            onClick={handlePreviousWeek}
+          >
+            <MdKeyboardArrowLeft className="w-5 h-5" />
           </button>
-          <button className="bg-white shadow px-3 py-2 border border-gray-300 cursor-pointer">
-            <MdOutlineKeyboardArrowRight className="w-5 h-5"/>
+          <button
+            className="bg-white shadow px-3 py-2 border border-gray-300 cursor-pointer"
+            onClick={handleNextWeek}
+          >
+            <MdOutlineKeyboardArrowRight className="w-5 h-5" />
           </button>
         </div>
       </div>

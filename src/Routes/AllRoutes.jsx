@@ -28,7 +28,7 @@ const AllRoutes = () => {
 
       <Route
         path="/reports"
-        element={isAuthenticated ? <Reports /> : <Navigate to="/login" />}
+        element={<Reports />}
       />
 
       <Route path="/categories" element={<CategoryList />} />
