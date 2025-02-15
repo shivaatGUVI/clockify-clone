@@ -15,7 +15,7 @@ const CategoryList = () => {
   return (
     <div className="flex flex-col flex-1 p-6  overflow-auto">
       {/* Header with Add Button */}
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-10">
         <h2 className="text-2xl font-semibold text-gray-800">Categories</h2>
         <button
           onClick={() => openModal()}
@@ -37,7 +37,7 @@ const CategoryList = () => {
               <div className="space-x-2">
                 <button
                   onClick={() => openModal(category)}
-                  className="px-3 py-1 text-sm text-blue-600 bg-blue-100 rounded-md hover:bg-blue-200 transition"
+                  className="px-3 py-1 text-sm text-green-600 bg-green-100 rounded-md hover:bg-green-200 transition"
                 >
                   Edit
                 </button>
