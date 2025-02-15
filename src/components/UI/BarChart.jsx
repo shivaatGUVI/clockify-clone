@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Chart } from "chart.js/auto";
 
-const BarChart = ({ chartRef, height = 400 }) => {
+const BarChart = ({ chartRef, height = 350 }) => {
   const canvasRef = useRef(null);
   let chartInstance = useRef(null);
 

@@ -6,14 +6,7 @@ export default function Filter() {
   const [selectedFilter, setSelectedFilter] = useState(null); // State for selected filter
   const dropdownRef = useRef(null); // Reference to the dropdown container
 
-  const filterOptions = [
-    "Team",
-    "Client",
-    "Project",
-    "Task",
-    "Tag",
-    "Description",
-  ];
+  const filterOptions = ["Team", "Project"];
 
   const handleDropdownToggle = (filter) => {
     setSelectedFilter(filter); // Set the selected filter

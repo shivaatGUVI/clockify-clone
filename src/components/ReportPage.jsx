@@ -4,6 +4,8 @@ import jsPDF from "jspdf";
 import BarChart from "../components/UI/BarChart";
 import DoughnutChart from "../components/UI/DoughnutChart";
 import { Chart, registerables } from "chart.js";
+import Tracker from "./Tracker";
+import VisualChart from "./VisualChart";
 
 // Clear any existing defaults and register components
 Chart.register(...registerables);
@@ -117,33 +119,34 @@ const ReportPage = () => {
         </h2>
         <p style={{ color: "rgb(100, 116, 139)" }}>10/02/2025 - 16/02/2025</p>
         <div
-          className="mt-4 text-2xl font-bold"
+          className="mt-4 text-xl font-bold"
           style={{ color: "rgb(79, 70, 229)" }}
         >
           Total: 03:53:38
         </div>
-
-        <div className="mt-6">
-          <h3
-            className="text-lg font-semibold"
-            style={{ color: "rgb(0, 0, 0)" }}
-          >
-            Tracked Hours (Bar Chart)
-          </h3>
-          <div className="h-64 w-full">
-            <BarChart chartRef={barChartRef} />
+        <div className="flex gap-3.5 items-center justify-around mb-12">
+          <div className="flex-1">
+            <h3
+              className="text-lg font-semibold"
+              style={{ color: "rgb(0, 0, 0)" }}
+            >
+              Tracked Hours (Bar Chart)
+            </h3>
+            <div className="h-64 w-full">
+              <BarChart chartRef={barChartRef} />
+            </div>
           </div>
-        </div>
 
-        <div className="mt-32">
-          <h3
-            className="text-lg font-semibold"
-            style={{ color: "rgb(0, 0, 0)" }}
-          >
-            Hours Breakdown (Doughnut Chart)
-          </h3>
-          <div className="h-64 w-full my-16">
-            <DoughnutChart chartRef={doughnutChartRef} />
+          <div className="flex-1">
+            <h3
+              className="text-lg font-semibold p-4"
+              style={{ color: "rgb(0, 0, 0)" }}
+            >
+              Hours Breakdown (Doughnut Chart)
+            </h3>
+            <div className="h-64 w-full mt-4">
+              <DoughnutChart chartRef={doughnutChartRef} />
+            </div>
           </div>
         </div>
       </div>
