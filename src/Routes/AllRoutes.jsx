@@ -1,24 +1,20 @@
-import React from "react";
+import { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Reports from "../pages/Reports";
+import { AuthContext } from "../contexts/LoginContext";
+import Home from "../pages/Home";
 
 const AllRoutes = () => {
-  // You can add authentication check here
-  const isAuthenticated = false; // Replace with your auth logic
-
+  const { isAuthenticated } = useContext(AuthContext);
   return (
     <Routes>
       {/* Public Routes */}
-      <Route
-        path="/login"
-        element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" />}
-      />
-      <Route
-        path="/signup"
-        element={!isAuthenticated ? <Signup /> : <Navigate to="/dashboard" />}
-      />
+
+      <Route path="/home" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
 
       {/* Protected Routes */}
       <Route
