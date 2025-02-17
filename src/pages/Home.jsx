@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { AuthContext } from "../contexts/LoginContext";
+import { AuthContext } from "../context/LoginContext";
 
 export default function Home() {
   const { checkSession, isAuthenticated } = useContext(AuthContext);
