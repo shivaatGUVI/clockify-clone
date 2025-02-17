@@ -6,13 +6,14 @@ import { useContext } from "react";
 import { AuthContext } from "./contexts/LoginContext";
 
 function App() {
+  // eslint-disable-next-line no-unused-vars
   const { isAuthenticated } = useContext(AuthContext);
   return (
     <BrowserRouter>
       <div className="flex">
-        <Sidebar />
+      <Sidebar />
         <div className="flex-1">
-          <Navbar />
+        <Navbar />
           <div className="p-4">
             <AllRoutes />
           </div>
