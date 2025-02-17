@@ -3,7 +3,7 @@ import AllRoutes from "./Routes/AllRoutes";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import { useContext } from "react";
-import { AuthContext } from "./contexts/LoginContext";
+import { AuthContext } from "./context/LoginContext";
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
