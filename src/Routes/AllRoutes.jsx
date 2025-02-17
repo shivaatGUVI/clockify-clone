@@ -5,6 +5,8 @@ import Signup from "../pages/Signup";
 import Reports from "../pages/Reports";
 import { AuthContext } from "../contexts/LoginContext";
 import Home from "../pages/Home";
+import CategoryList from "../components/category/List";
+import TrackerForm from "../components/tracker/Form";
 
 const AllRoutes = () => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -28,6 +30,10 @@ const AllRoutes = () => {
         path="/reports"
         element={isAuthenticated ? <Reports /> : <Navigate to="/login" />}
       />
+
+      <Route path="/categories" element={<CategoryList />} />
+
+      <Route path="/tracker" element={<TrackerForm />} />
 
       {/* Redirect root to login */}
       <Route path="/" element={<Navigate to="/login" />} />
