@@ -4,13 +4,11 @@ import axios from "axios";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const { name = "Shiva" } = useContext(AuthContext);
+  const { user, setIsAuthenticated } = useContext(AuthContext);
 
   const handleLogout = async () => {
     try {
-      await axios.get(`${import.meta.env.VITE_API_URL}/api/logout`, {
-        withCredentials: true, // Include cookies in the request
-      });
+      await axios.get(`${import.meta.env.VITE_API_URL}/api/logout`);
       setIsAuthenticated(false);
       console.log("Logged out successfully");
     } catch (error) {
@@ -39,7 +37,7 @@ export default function Navbar() {
                 />
               </svg>
               <span className="ml-2 text-white font-bold text-xl">
-                Clockify Clone
+                Tiktokify
               </span>
             </a>
           </div>
@@ -59,7 +57,7 @@ export default function Navbar() {
                 >
                   <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
-                {name}
+                {user.name}
               </span>
               <button
                 onClick={handleLogout}

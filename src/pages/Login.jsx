@@ -1,15 +1,36 @@
-import { useState } from "react";
-import { Link } from "react-router";
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router";
+import axios from "axios";
+import { AuthContext } from "../contexts/LoginContext";
 
-const Login = () => {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { setIsAuthenticated, setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your login logic here
-    console.log("Login:", { email, password });
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/login`,
+        { email, password }
+      );
+      if (response.status === 200) {
+        setIsAuthenticated(true);
+        setUser(response.data.user);
+        navigate("/dashboard"); // Redirect to dashboard after successful login
+      } else {
+        console.error("Login failed:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error logging in:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -38,7 +59,7 @@ const Login = () => {
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 text-white"
+                className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:border-blue-500"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -55,8 +76,9 @@ const Login = () => {
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            disabled={loading}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
@@ -71,6 +93,4 @@ const Login = () => {
       </div>
     </div>
   );
-};
-
-export default Login;
+}

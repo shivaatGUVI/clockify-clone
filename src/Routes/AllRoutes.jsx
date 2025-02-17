@@ -29,16 +29,11 @@ const AllRoutes = () => {
       />
       <Route
         path="/task"
-        // element={
-        //   isAuthenticated ? <Task/> : <Navigate to="/login" />
-        // }
-        element={<Task/>}  
+        element={isAuthenticated ? <Task /> : <Navigate to="/login" />}
+        // element={<Task/>}
       />
 
-      <Route
-        path="/reports"
-        element={<Reports />}
-      />
+      <Route path="/reports" element={<Reports />} />
 
       <Route path="/categories" element={<CategoryList />} />
 

@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import axios from "axios";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleGoogleSignIn = () => {
     setLoading(true);
@@ -15,11 +18,26 @@ const Signup = () => {
     // Redirect to your backend's Google OAuth route
     window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your signup logic here
-    console.log("Signup:", { email, password, isAdmin });
+    setLoading(true);
+    setError("");
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/register`,
+        { email, name, password, isAdmin }
+      );
+      if (response.status === 201) {
+        navigate("/login"); // Redirect to login after successful signup
+      } else {
+        setError(response.data.message);
+      }
+    } catch (error) {
+      setError("Error signing up. Please try again.");
+      console.error("Error signing up:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -29,6 +47,18 @@ const Signup = () => {
           Sign Up
         </h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 mb-4">
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Name
+            </label>
+            <input
+              type="text"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Email
@@ -48,7 +78,7 @@ const Signup = () => {
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 text-white"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 text-black"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required

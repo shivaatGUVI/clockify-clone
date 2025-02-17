@@ -1,11 +1,15 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({ name: "" });
+
+  useEffect(() => {
+    checkSession();
+  }, []);
 
   const checkSession = async () => {
     try {
@@ -23,7 +27,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, checkSession }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        user,
+        checkSession,
+        setUser,
+        setIsAuthenticated,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
