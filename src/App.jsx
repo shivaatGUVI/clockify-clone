@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { AuthContext } from "./contexts/LoginContext";
 
 function App() {
+  // eslint-disable-next-line no-unused-vars
   const { isAuthenticated } = useContext(AuthContext);
   return (
     <BrowserRouter>
