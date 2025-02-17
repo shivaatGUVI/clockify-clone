@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from "react-router";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Reports from "../pages/Reports";
-import { AuthContext } from "../contexts/LoginContext";
+import { AuthContext } from "../context/LoginContext";
 import Home from "../pages/Home";
 import CategoryList from "../components/category/List";
 import TrackerForm from "../components/tracker/Form";
