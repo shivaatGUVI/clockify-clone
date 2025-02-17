@@ -7,7 +7,7 @@ import { AuthContext } from "../context/LoginContext";
 import Home from "../pages/Home";
 import CategoryList from "../components/category/List";
 import TrackerForm from "../components/tracker/Form";
-import TeamManagement from "../Components/Team/TeamManagement";
+import TeamManagement from "../components/Team/TeamManagement";
 import Task from "../components/Team/Task";
 
 const AllRoutes = () => {
