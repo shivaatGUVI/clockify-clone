@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "../contexts/LoginContext";
+import { AuthContext } from "../context/LoginContext";
 import axios from "axios";
 
 export default function Navbar() {
