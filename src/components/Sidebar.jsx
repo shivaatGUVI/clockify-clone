@@ -63,7 +63,7 @@ export default function Sidebar() {
       ),
     },
     {
-      path: "/timetracker",
+      path: "/tracker",
       name: "Time Tracker",
       icon: (
         <svg

@@ -11,10 +11,8 @@ function App() {
     <BrowserRouter>
       <div className="flex">
         <Sidebar />
-        {/* {isAuthenticated && <Sidebar />} */}
         <div className="flex-1">
           <Navbar />
-          {/* {isAuthenticated && <Navbar />} */}
           <div className="p-4">
             <AllRoutes />
           </div>
